@@ -27,6 +27,18 @@ static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
     return std::move(contents);
 }
 
+float AskCoordinateToUser(std::string message) {
+    std::cout << "Please enter a " << message << " coordinate:";
+    float x;
+    std::cin >> x;
+    if (x<0 || x > 100) {
+        std::cout << "The value must be between 0 and 100" << "\n";
+        return AskCoordinateToUser(message);
+    } else {
+        return x;
+    }
+}
+
 int main(int argc, const char **argv)
 {    
     std::string osm_data_file = "";
@@ -56,22 +68,10 @@ int main(int argc, const char **argv)
     // user input for these values using std::cin. Pass the user input to the
     // RoutePlanner object below in place of 10, 10, 90, 90.
     std::cout << "Before we can start, we need a start position." << "\n";
-    std::cout << "Please enter a start X coordinate:" << "\n";
-    float start_x;
-    std::cin >> start_x;
-    std::cout << "Please enter a start Y coordinate:" << "\n";
-    float start_y;
-    std::cin >> start_y;
-    std::cout << "You gave the following start coordinates X=" << start_x << " and Y=" << start_y << "\n";
-
-    std::cout << "Now we still need an end position." << "\n";
-    std::cout << "Please enter an end X coordinate:" << "\n";
-    float end_x;
-    std::cin >> end_x;
-    std::cout << "Please enter an end Y coordinate:" << "\n";
-    float end_y;
-    std::cin >> end_y;
-    std::cout << "You gave the following end coordinates X=" << end_x << " and Y=" << end_y << "\n";
+    float start_x = AskCoordinateToUser("start X");
+    float start_y = AskCoordinateToUser("start Y");
+    float end_x = AskCoordinateToUser("end X");
+    float end_y = AskCoordinateToUser("end Y");
 
     // Build Model.
     RouteModel model{osm_data};
